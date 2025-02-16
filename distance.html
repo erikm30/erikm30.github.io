@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slideshow</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .header {
+            margin: 20px 0;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 800px;
+        }
+        .textbox {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50px;
+            height: 50px;
+            margin: 0 20px;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #fff;
+            user-select: none;
+        }
+        #left-box {
+            background-color: green;
+        }
+        #right-box {
+            background-color: blue;
+        }
+        .slideshow {
+            position: relative;
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 800px;
+            overflow: hidden;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+        }
+        .slideshow img {
+            width: auto;
+            height: 100%;
+            max-width: 100%;
+            display: none;
+            object-fit: contain;
+        }
+        .slideshow img.active {
+            display: block;
+        }
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+            max-width: 800px;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="header"><h1>Wie weit sind diese beiden Orte entfernt ?</h1><h2>Schätze die Entfernung in km (Luftlinie)</h2></div>
+    <div class="container">
+        <div class="textbox" id="left-box">0</div>
+        <div class="slideshow">
+            <img src="images/gratkorn-henndorf.png" class="active">
+            <img src="images/gratkorn-henndorf-loesung.png">
+        </div>
+            <div class="textbox" id="right-box">0</div>
+    </div>
+    <div class="controls">
+        <button id="prev">Zurück</button>
+        <button id="next">Weiter</button>
+    </div>
+
+    <script>
+        const images = document.querySelectorAll('.slideshow img');
+        let currentIndex = 0;
+
+        function showImage(index) {
+            images.forEach((img, i) => {
+                img.classList.toggle('active', i === index);
+            });
+        }
+
+        document.getElementById('next').addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % images.length;
+            showImage(currentIndex);
+        });
+
+        document.getElementById('prev').addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            showImage(currentIndex);
+        });
+
+        // Optionale Steuerung per Tastatur
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowRight') {
+                document.getElementById('next').click();
+            } else if (event.key === 'ArrowLeft') {
+                document.getElementById('prev').click();
+            }
+        });
+
+        // Textbox-Inkrement
+        const leftBox = document.getElementById('left-box');
+        const rightBox = document.getElementById('right-box');
+
+        leftBox.addEventListener('click', () => {
+            leftBox.textContent = parseInt(leftBox.textContent) + 1;
+        });
+
+        rightBox.addEventListener('click', () => {
+            rightBox.textContent = parseInt(rightBox.textContent) + 1;
+        });
+    </script>
+</body>
+</html>
